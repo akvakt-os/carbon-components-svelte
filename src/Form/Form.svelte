@@ -1,6 +1,7 @@
 <script>
   /** Obtain a reference to the form element */
   export let ref = null;
+  export let enhance = new Function();
 </script>
 
 <!-- svelte-ignore a11y-mouse-events-have-key-events -->
@@ -15,6 +16,7 @@
   on:mouseenter
   on:mouseleave
   on:submit
+  use:enhance
 >
   <slot />
 </form>
