@@ -5,8 +5,8 @@
    * @slot {{ node: { id: TreeNodeId; text: string; expanded: boolean, leaf: boolean; disabled: boolean; selected: boolean; } }}
    */
 
-  /** @type {Array<TreeNode & { children?: TreeNode[] }>} */
-  export let children = [];
+  /** @type {Array<TreeNode & { childs?: TreeNode[] }>} */
+  export let childs = [];
   export let root = false;
 
   /** @type {string | number} */
@@ -51,11 +51,10 @@
     if (id === $activeNodeId && prevActiveId !== $activeNodeId) {
       if (!$selectedNodeIds.includes(id)) selectNode(node);
     }
-
     prevActiveId = $activeNodeId;
   });
 
-  $: parent = Array.isArray(children);
+  $: parent = Array.isArray(childs);
   $: node = { id, text, expanded, leaf: !parent };
   $: if (refLabel) {
     refLabel.style.marginLeft = `-${offset()}rem`;
@@ -65,8 +64,8 @@
 </script>
 
 {#if root}
-  {#each children as child (child.id)}
-    {#if Array.isArray(child.children)}
+  {#each childs as child (child.id)}
+    {#if Array.isArray(child.childs)}
       <svelte:self {...child} let:node>
         <slot node="{node}" />
       </svelte:self>
@@ -136,7 +135,7 @@
     on:focus="{() => {
       focusNode(node);
     }}"
-  >
+  > 
     <div class:bx--tree-node__label="{true}" bind:this="{refLabel}">
       <!-- svelte-ignore a11y-click-events-have-key-events -->
       <!-- svelte-ignore a11y-no-static-element-interactions -->
@@ -159,11 +158,11 @@
         <svelte:component this="{icon}" class="bx--tree-node__icon" />
         <slot node="{{ ...node, selected, disabled }}" />
       </span>
-    </div>
-    {#if expanded}
+    </div> 
+    {#if expanded} 
       <ul role="group" class:bx--tree-node__children="{true}">
-        {#each children as child (child.id)}
-          {#if Array.isArray(child.children)}
+        {#each childs as child (child.id)}
+          {#if Array.isArray(child.childs)}
             <svelte:self {...child} let:node>
               <slot node="{node}" />
             </svelte:self>

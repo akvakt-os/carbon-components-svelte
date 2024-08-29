@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
   /**
    * Depth-first search to find a node by id; returns an array
    * of nodes from the initial node to the matching leaf.
@@ -9,11 +9,11 @@
   function findNodeById(node, id) {
     if (node === null) return null;
     if (node.id === id) return [node];
-    if (!Array.isArray(node.children)) {
+    if (!Array.isArray(node.childs)) {
       return null;
     }
 
-    for (const child of node.children) {
+    for (const child of node.childs) {
       const nodes = findNodeById(child, id);
 
       if (Array.isArray(nodes)) {
@@ -29,7 +29,7 @@
 <script>
   /**
    * @typedef {string | number} TreeNodeId
-   * @typedef {{ id: TreeNodeId; text: any; icon?: typeof import("svelte").SvelteComponent<any>; disabled?: boolean; children?: TreeNode[]; }} TreeNode
+   * @typedef {{ id: TreeNodeId; text: any; icon?: typeof import("svelte").SvelteComponent<any>; disabled?: boolean; childs?: TreeNode[]; }} TreeNode
    * @slot {{ node: { id: TreeNodeId; text: string; expanded: boolean, leaf: boolean; disabled: boolean; selected: boolean; } }}
    * @event {TreeNode & { expanded: boolean; leaf: boolean; }} select
    * @event {TreeNode & { expanded: boolean; leaf: boolean; }} toggle
@@ -37,10 +37,10 @@
    */
 
   /**
-   * Provide an array of children nodes to render
+   * Provide an array of childs nodes to render
    * @type {Array<TreeNode>}
    */
-  export let children = [];
+  export let childs = [];
 
   /**
    * Set the current active node id
@@ -99,7 +99,7 @@
       .filter(
         (node) =>
           filterNode(node) ||
-          node.children?.some((child) => filterNode(child) && child.children)
+          node.childs?.some((child) => filterNode(child) && child.childs)
       )
       .map((node) => node.id);
   }
@@ -121,7 +121,7 @@
    * @type {(id: TreeNodeId) => void}
    */
   export function showNode(id) {
-    for (const child of children) {
+    for (const child of childs) {
       const nodes = findNodeById(child, id);
 
       if (nodes) {
@@ -207,23 +207,23 @@
   });
 
   /**
-   * @param {Array<TreeNode & { children?: TreeNode[] }>} children
+   * @param {Array<TreeNode & { childs?: TreeNode[] }>} childs
    */
-  function traverse(children) {
+  function traverse(childs) {
     let nodes = [];
 
-    children.forEach((node) => {
+    childs.forEach((node) => {
       nodes.push(node);
 
-      if (Array.isArray(node.children)) {
-        nodes = [...nodes, ...traverse(node.children)];
+      if (Array.isArray(node.childs)) {
+        nodes = [...nodes, ...traverse(node.childs)];
       }
     });
 
     return nodes;
   }
 
-  $: nodes = traverse(children);
+  $: nodes = traverse(childs);
   $: nodeIds = nodes.map((node) => node.id);
   $: activeNodeId.set(activeId);
   $: selectedNodeIds.set(selectedIds);
@@ -260,8 +260,8 @@
   aria-multiselectable="{selectedIds.length > 1 || undefined}"
   on:keydown
   on:keydown|stopPropagation="{handleKeyDown}"
->
-  <TreeViewNodeList root children="{children}" let:node>
+>  
+  <TreeViewNodeList root childs="{childs}" let:node>
     <slot node="{node}">
       {node.text}
     </slot>
