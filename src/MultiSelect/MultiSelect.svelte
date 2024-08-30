@@ -249,16 +249,16 @@
     }
 
     if (!open) {
-      if (!initialSorted || selectionFeedback !== "fixed") {
+      /* if (!initialSorted || selectionFeedback !== "fixed") {
         sortedItems = sort();
         initialSorted = true;
-      }
+      } */
 
       highlightedIndex = -1;
       value = "";
     }
 
-    items = sortedItems;
+    //items = sortedItems;
   });
 
   $: menuId = `menu-${id}`;
