@@ -9,6 +9,11 @@ export interface FormProps extends RestProps {
    * @default null
    */
   ref?: null | HTMLFormElement;
+  /**
+   * Obtain a function to use in the form element
+   * @default Function
+   */
+  enhance?: Function;
 
   [key: `data-${string}`]: any;
 }

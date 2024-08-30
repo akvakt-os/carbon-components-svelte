@@ -1,6 +1,7 @@
 <script>
   /** Obtain a reference to the form element */
   export let ref = null;
+  /** Obtain a function to use in the form element */
   export let enhance = new Function();
 </script>
 
