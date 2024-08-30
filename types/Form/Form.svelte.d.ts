@@ -27,6 +27,7 @@ export default class Form extends SvelteComponentTyped<
     mouseenter: WindowEventMap["mouseenter"];
     mouseleave: WindowEventMap["mouseleave"];
     submit: WindowEventMap["submit"];
+    reset: WindowEventMap["reset"];
   },
   { default: {} }
 > {}

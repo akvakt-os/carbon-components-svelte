@@ -17,6 +17,7 @@
   on:mouseenter
   on:mouseleave
   on:submit
+  on:reset
   use:enhance
 >
   <slot />
